@@ -71,7 +71,7 @@
     8. supply orders above the case's registered `:max-supply-cost`
        ceiling.
     9. low confidence (< `confidence-floor`)."
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [legalsecretary.store :as store]))
 
 (def confidence-floor 0.6)
@@ -116,7 +116,7 @@
    "determine legal strategy without attorney"])
 
 (defn- scope-exclusion-violation? [proposal]
-  (let [text (str/lower-case (str (:rationale proposal) " " (:concern-detail proposal)))]
+  (let [text (str/lower (str (:rationale proposal) " " (:concern-detail proposal)))]
     (boolean (some #(str/includes? text %) scope-exclusion-phrases))))
 
 (def ^:private case-scoped-ops
