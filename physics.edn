@@ -1,0 +1,33 @@
+;; What this occupation's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:physics` runs it.
+;;
+;; README "Robotics premise": a document intake and case-file coordination
+;; robot performs filing, docketing and physical archival (ISCO 3342 legal
+;; secretaries). Its physical work: lifting banker boxes of case files onto
+;; the file-room shelf, and archiving originals in a fire-resistant cabinet
+;; whose rating time decides how long the originals survive a fire.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isco-3342"
+ :cases
+ [{:id :case-box-to-file-room-shelf
+   :kind :manipulator
+   :procedure "arm lifts a banker box of case files from the intake cart to the file-room shelf"
+   :params {:l1-m 0.50 :l2-m 0.45 :m1-kg 6.0 :m2-kg 4.0
+            :from [0.60 0.10] :to [0.30 0.75] :duration-s 2.5 :steps 500}
+   :sweep {:param :payload-kg :values [2.0 5.0 8.0 11.0 14.0]}
+   :quantity :peak-tau1-nm
+   :limit {:max 110.0 :basis "estimate: continuous shoulder torque of a ~10 kg-payload collaborative arm"}
+   :boundary {:lo 0.5 :hi 30.0}}
+  {:id :originals-cabinet-fire-duration
+   :kind :thermal
+   :procedure "furnace exposure of the originals cabinet wall (5 cm insulation, face held at 927 °C, no cool-down modeled); interior face temperature against exposure time"
+   :params {:thickness-m 0.05 :conductivity-w-mk 0.12 :density-kg-m3 900.0 :specific-heat-j-kgk 1000.0
+            :t0-c 20.0 :t-hot-c 927.0 :front-fixed? true :t-back-ambient-c 20.0 :h-back-w-m2k 5.0
+            :threshold-c 177.0}
+   :sweep {:param :duration-s :values [1800.0 2700.0 3600.0 5400.0 7200.0]}
+   :quantity :final-back-c
+   :limit {:max 177.0 :basis "UL 72 Class 350 (paper records): interior must not exceed 350 °F (177 °C) during the fire-endurance test"}
+   :boundary {:lo 600.0 :hi 7200.0}}]}
