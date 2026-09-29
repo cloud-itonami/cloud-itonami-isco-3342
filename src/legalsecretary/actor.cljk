@@ -1,6 +1,6 @@
 (ns legalsecretary.actor
   "LegalSecretaryActor — the ISCO-08 3342 community legal secretarial
-  actor as a `langgraph.graph/state-graph` (ADR-2607011000 / CLAUDE.md
+  actor as a `langgraph.graph/state-graph` (ADR-2607011000 / AGENTS.md
   Actors section). One graph run = one legal-secretarial operation
   request (intake → advise → govern → decide → commit/hold, with a
   human-approval interrupt for escalated proposals). No infinite
